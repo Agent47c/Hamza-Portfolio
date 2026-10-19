@@ -1,65 +1,88 @@
-# My Portfolio Website - Overview 🚀
+# Hamza Ramzan — Personal Portfolio Website 🚀
 
-This repository contains the open-source version of my personal portfolio website.  
-Feel free to explore the code and use it for learning and inspiration.
-
----
-
-## ⚠️ Usage Notice
-
-This project is shared for learning purposes only.
-
-Please do NOT:
-- Clone or replicate the full website or design
-- Repost it with minor content changes
-- Use this project for commercial/client work
-- Create tutorials or content using this exact project
-
-If you use parts of the code, you must provide proper credit linking back to the original repository.
-
-Build your own version — don’t just copy.
-
-— Moncy Yohannan
+A modern, interactive personal portfolio website for **Hamza Ramzan**, Machine Learning Engineer & Software Developer. Built with **React 18**, **TypeScript**, **Three.js / React Three Fiber**, and **GSAP**.
 
 ---
 
-## 🛠️ Instructions
+## 🌟 Highlights & Sections
 
-I have modified the GSAP Club plugins using trial versions.  
-⚠️ Note: Trial plugins cannot be used for production or hosting.
-
-For official GSAP Club plugins, refer here:  
-https://gsap.com/docs/v3/Installation/
-
----
-
-## ⚙️ Tech Stack
-
-React • TypeScript • GSAP • Three.js • WebGL • HTML • CSS • JavaScript
-
----
-
-## 🎨 Assets Usage
-
-Some 3D assets included in this repository are free to use for learning purposes.
-
-However:
-
-- The original 3D avatar used on my live portfolio is NOT included in this repository
-- That avatar is a custom asset created over ~1 month
-- It is not open source and not available for reuse
-
-Any usage, extraction, or redistribution of that avatar from my live website is strictly prohibited.
+- **Hero & Interactive 3D Canvas**: Dynamic 3D graphics powered by Three.js and React Three Fiber.
+- **About Me**: Professional background, education (BS Software Engineering at The Islamia University of Bahawalpur), and core capabilities.
+- **Skills Matrix (What I Do)**:
+  - **Machine Learning & AI**: Python, PyTorch, TensorFlow, YOLOv8/v11, SAM2, OpenCV, Scikit-Learn, Pandas.
+  - **Software Engineering**: React, React Native, TypeScript, Node.js, Next.js, Git, Docker, Supabase.
+  - **Creative Tech**: AI Video Generation (Character Consistency), Video Editing.
+- **Career Timeline**: Work history including Motion Spectrum, Arch Technologies, Certura, and Data Nomad.
+- **Featured Projects**:
+  1. **PPE Safety Monitor** — Real-time PPE compliance tracking with YOLOv11 & StrongSORT.
+  2. **Brain Tumor Segmentation** — Medical imaging segmentation using SAM2 & YOLO.
+  3. **IronLog Gym Tracker** — React Native & Expo mobile workout logger.
+  4. **Farm Camera Daily Overview** — Tapo C200 automated surveillance & summary tool.
+  5. **Windows Smart Application Backup Tool** — Windows registry & config backup utility.
+  6. **House Price Prediction** — End-to-end ML regression model.
+  7. **Motion Spectrum NAS Setup** — Active Directory, RAID & network storage infrastructure.
+  8. **High-Performance PC Building** — Hardware architecture & workstation optimization.
+- **Interactive Tech Sphere**: 3D physics-based sphere simulation demonstrating technical skills.
+- **Resume Download**: Direct access to Hamza's CV.
 
 ---
 
-![Protfolio-Preview](https://github.com/user-attachments/assets/3c4557e7-6392-4928-b8a9-7b2476ef4edd)
+## 🛠️ Tech Stack
+
+- **Frontend**: React 18, TypeScript, Vite
+- **3D & Animation**: Three.js, @react-three/fiber, @react-three/drei, GSAP, @gsap/react
+- **Styling**: Vanilla CSS, Modern Glassmorphism & Responsive Layouts
+- **Analytics**: @vercel/analytics
 
 ---
 
-## 📄 License
+## 💻 Local Development
 
-This project is licensed under the Personal Portfolio License (PPL) v1.0.
+### 1. Prerequisites
+- Node.js (v18 or higher)
+- npm or yarn
 
-See the LICENSE file for full details
+### 2. Installation
+```bash
+git clone https://github.com/Agent47c/Hamza-Portfolio.git
+cd Hamza-Portfolio
+npm install
+```
 
+### 3. Run Dev Server
+```bash
+npm run dev
+```
+Open `http://localhost:5173` in your browser.
+
+### 4. Build for Production
+```bash
+npm run build
+```
+The production bundle will be generated in `dist/`.
+
+---
+
+## ☁️ Deployment
+
+The project is pre-configured for one-click deployment on **Vercel**:
+1. Connect your GitHub repository to Vercel.
+2. Select framework preset **Vite**.
+3. Deploy!
+
+For complete deployment and architecture details, see [PORTFOLIO_DEPLOYMENT.md](./PORTFOLIO_DEPLOYMENT.md).
+
+---
+
+## 📬 Contact & Connect
+
+- **Portfolio**: [Agent47c/Hamza-Portfolio](https://github.com/Agent47c/Hamza-Portfolio)
+- **GitHub**: [@Agent47c](https://github.com/Agent47c)
+- **LinkedIn**: [Hamza Ramzan](https://www.linkedin.com/in/hamza-ramzan)
+- **Email**: [hamza.jani7433@gmail.com](mailto:hamza.jani7433@gmail.com)
+
+---
+
+## 📄 Credits & Attribution
+
+Original interactive 3D layout inspiration and base animation structure adapted from Moncy Yohannan's open-source portfolio template.
