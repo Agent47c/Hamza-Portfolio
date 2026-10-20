@@ -1,28 +1,63 @@
-.section-container {
-  width: 1300px;
+/* =========================================
+   APP CORE STYLES
+   ========================================= */
+
+.app-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-color: var(--c-bg);
 }
-.title,
-.para {
-  font-kerning: none;
-  -webkit-text-rendering: optimizeSpeed;
-  text-rendering: optimizeSpeed;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
+
+main {
+  position: relative;
+  width: 100%;
 }
-@media only screen and (max-width: 1600px) {
-  .section-container {
-    width: 1200px;
-    max-width: calc(100% - 160px);
+
+/* Fast Route Transition Bar (320ms) */
+.route-transition-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2.5px;
+  background: linear-gradient(90deg, var(--c-accent) 0%, #ff7a3d 50%, var(--c-accent) 100%);
+  z-index: 9999;
+  transform: scaleX(0);
+  transform-origin: left;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.route-transition-bar.is-active {
+  animation: routeProgress 320ms var(--ease-out) forwards;
+}
+
+@keyframes routeProgress {
+  0% {
+    transform: scaleX(0);
+    opacity: 1;
+  }
+  60% {
+    transform: scaleX(0.75);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0;
   }
 }
-@media only screen and (max-width: 1400px) {
-  .section-container {
-    width: 900px;
-  }
+
+.page-content-wrapper {
+  animation: pageFadeIn 280ms var(--ease-out);
 }
-@media only screen and (max-width: 900px) {
-  .section-container {
-    width: 500px;
-    max-width: var(--cWidth);
+
+@keyframes pageFadeIn {
+  from {
+    opacity: 0.88;
+  }
+  to {
+    opacity: 1;
   }
 }

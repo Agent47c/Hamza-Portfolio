@@ -1,0 +1,319 @@
+/* =========================================
+   PROJECT INDEX COMPONENT STYLES
+   Curated Engineering Showcase — 100% Dark Identity
+   Rhythm: 01 (Large Horizontal) -> 02+03 (Side by Side) -> 04 (Large Horizontal) -> 05+06 (Side by Side)
+   ========================================= */
+
+.project-index-section {
+  background-color: var(--color-base);
+  border-bottom: 1px solid var(--color-border-subtle);
+  position: relative;
+}
+
+.project-curated-showcase {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2xl);
+  margin-top: var(--s-2xl);
+}
+
+/* Base Project Tile */
+.project-tile {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  text-decoration: none;
+  position: relative;
+  background-color: var(--color-surface);
+  transition: border-color var(--duration-fast) var(--ease-out),
+              transform var(--duration-fast) var(--ease-out),
+              box-shadow var(--duration-fast) var(--ease-out);
+}
+
+/* Subtle tonal variations between dark foundation & charcoal surface */
+.project-surface-dark {
+  background-color: var(--color-surface);
+}
+
+.project-surface-charcoal {
+  background-color: var(--color-surface);
+}
+
+.project-tile:hover {
+  border-color: var(--color-orange);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+}
+
+.project-tile:hover .tile-title {
+  color: var(--color-orange);
+}
+
+.project-tile:hover .tile-arrow {
+  transform: translateX(5px);
+}
+
+.project-tile:hover .tile-image-inner img {
+  transform: scale(1.03);
+}
+
+/* -----------------------------------------
+   Large Horizontal Tile (Project 01 & 04)
+   ----------------------------------------- */
+.project-tile-horizontal {
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 100%;
+}
+
+@media (min-width: 992px) {
+  .project-tile-horizontal {
+    grid-template-columns: 1.05fr 1.35fr;
+    min-height: 440px;
+  }
+}
+
+.project-horizontal-content {
+  padding: var(--s-xl);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--s-lg);
+}
+
+@media (min-width: 1200px) {
+  .project-horizontal-content {
+    padding: var(--s-2xl);
+  }
+}
+
+/* -----------------------------------------
+   Side-by-Side Pair (Projects 02+03 & 05+06)
+   ----------------------------------------- */
+.project-side-pair {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-xl);
+  width: 100%;
+}
+
+@media (min-width: 900px) {
+  .project-side-pair {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s-xl);
+  }
+}
+
+.project-tile-stacked {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.tile-stacked-content {
+  padding: var(--s-lg);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  gap: var(--s-lg);
+}
+
+@media (min-width: 1200px) {
+  .tile-stacked-content {
+    padding: var(--s-xl);
+  }
+}
+
+/* Main title-desc block in stacked cards: eliminates collision */
+.tile-stacked-main {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tile-stacked-footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-sm);
+  padding-top: var(--s-sm);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+/* -----------------------------------------
+   Image Containers & Framing
+   ----------------------------------------- */
+.tile-image-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--color-base);
+}
+
+.tile-image-horizontal {
+  height: 280px;
+  border-top: 1px solid var(--color-border);
+}
+
+@media (min-width: 992px) {
+  .tile-image-horizontal {
+    height: 100%;
+    min-height: 420px;
+    border-top: none;
+    border-left: 1px solid var(--color-border);
+  }
+}
+
+.tile-image-stacked {
+  height: 240px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+@media (min-width: 1024px) {
+  .tile-image-stacked {
+    height: 280px;
+  }
+}
+
+.tile-image-inner {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Fix image cropping: object-position pinned so UI labels ("D - CH03", "AGRI-CAM 01") are never cut off */
+.tile-image-inner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left center;
+  transition: transform var(--duration-normal) var(--ease-out);
+  will-change: transform;
+}
+
+.tile-image-stacked .tile-image-inner img {
+  object-position: center top;
+}
+
+/* -----------------------------------------
+   Typography & Metadata
+   ----------------------------------------- */
+.tile-badge-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.tile-idx {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--color-orange);
+}
+
+.tile-cat-divider {
+  color: var(--color-border);
+  font-size: var(--text-xs);
+  font-weight: 500;
+}
+
+.tile-cat {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.tile-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tile-title {
+  margin: 0;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  line-height: 1.22;
+  letter-spacing: -0.02em;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.tile-title-lg {
+  font-size: clamp(1.6rem, 2.4vw, 2.2rem);
+}
+
+.tile-title-md {
+  font-size: clamp(1.3rem, 1.8vw, 1.6rem);
+}
+
+.tile-desc {
+  margin: 0;
+  font-size: var(--text-base);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  max-width: 540px;
+}
+
+.tile-meta-block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-sm);
+  padding-top: var(--s-sm);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.tile-tech-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tile-tech-tag {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--color-text-secondary);
+  background-color: var(--color-raised);
+  border: 1px solid var(--color-border-subtle);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+}
+
+/* Understated Action Row */
+.tile-action-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-orange);
+  margin-top: 4px;
+}
+
+.tile-arrow {
+  display: inline-block;
+  font-size: var(--text-sm);
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-tile:hover {
+    transform: none;
+  }
+  .project-tile:hover .tile-arrow {
+    transform: none;
+  }
+  .project-tile:hover .tile-image-inner img {
+    transform: none;
+  }
+}

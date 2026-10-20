@@ -1,80 +1,274 @@
-import { useEffect } from "react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import HoverLinks from "./HoverLinks";
-import { gsap } from "gsap";
-import { ScrollSmoother } from "gsap-trial/ScrollSmoother";
+import { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./styles/Navbar.css";
 
-gsap.registerPlugin(ScrollSmoother, ScrollTrigger);
-export let smoother: ScrollSmoother;
+interface NavbarProps {
+  onNavigate: (target: string) => void;
+}
 
-const Navbar = () => {
+export const Navbar = ({ onNavigate }: NavbarProps) => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [activeSection, setActiveSection] = useState<string>("");
+  const location = useLocation();
+  const navigate = useNavigate();
+
   useEffect(() => {
-    smoother = ScrollSmoother.create({
-      wrapper: "#smooth-wrapper",
-      content: "#smooth-content",
-      smooth: 1.7,
-      speed: 1.7,
-      effects: true,
-      autoResize: true,
-      ignoreMobileResize: true,
-    });
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (docHeight > 0) {
+        const progress = (window.scrollY / docHeight) * 100;
+        setScrollProgress(Math.min(100, Math.max(0, progress)));
+      }
+    };
 
-    smoother.scrollTop(0);
-    smoother.paused(true);
-
-    let links = document.querySelectorAll(".header ul a");
-    links.forEach((elem) => {
-      let element = elem as HTMLAnchorElement;
-      element.addEventListener("click", (e) => {
-        if (window.innerWidth > 1024) {
-          e.preventDefault();
-          let elem = e.currentTarget as HTMLAnchorElement;
-          let section = elem.getAttribute("data-href");
-          smoother.scrollTo(section, true, "top top");
-        }
-      });
-    });
-    window.addEventListener("resize", () => {
-      ScrollSmoother.refresh(true);
-    });
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Track active section via IntersectionObserver on homepage
+  useEffect(() => {
+    if (location.pathname !== "/") {
+      setActiveSection("");
+      return;
+    }
+
+    const sectionIds = ["journey", "projects", "skills", "experience", "contact"];
+    const elements = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
+
+    if (elements.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      {
+        rootMargin: "-25% 0px -55% 0px",
+        threshold: 0,
+      }
+    );
+
+    elements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [location.pathname]);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
+
+  const handleLinkClick = (target: string) => {
+    setMobileMenuOpen(false);
+
+    if (location.pathname !== "/") {
+      navigate("/");
+      setTimeout(() => {
+        onNavigate(target);
+      }, 100);
+    } else {
+      onNavigate(target);
+    }
+  };
+
   return (
-    <>
-      <div className="header">
-        <a href="/#" className="navbar-title" data-cursor="disable">
-          Hamza Ramzan
-        </a>
-        <a
-          href="mailto:hamza.jani7433@gmail.com"
-          className="navbar-connect"
-          data-cursor="disable"
-        >
-          hamza.jani7433@gmail.com
-        </a>
-        <ul>
-          <li>
-            <a data-href="#about" href="#about">
-              <HoverLinks text="ABOUT" />
+    <header className={`navbar ${scrolled ? "is-scrolled" : ""}`}>
+      <div className="container">
+        <div className="navbar-inner">
+          <Link
+            to="/"
+            className="navbar-brand"
+            onClick={() => {
+              if (location.pathname === "/") {
+                onNavigate("#hero");
+              }
+            }}
+          >
+            <div className="brand-monogram">
+              HAMZA <span>RAMZAN</span>
+            </div>
+            <div className="brand-status">
+              <span className="status-dot"></span>
+              <span>Available for engineering roles</span>
+            </div>
+          </Link>
+
+          <nav className="navbar-links" aria-label="Main Navigation">
+            <a
+              href="#journey"
+              className={`nav-link ${activeSection === "journey" ? "is-active" : ""}`}
+              onClick={(e) => {
+                e.preventDefault();
+                handleLinkClick("#journey");
+              }}
+            >
+              <span className="nav-indicator" aria-hidden="true" />
+              <span>Journey</span>
             </a>
-          </li>
-          <li>
-            <a data-href="#work" href="#work">
-              <HoverLinks text="WORK" />
+            <a
+              href="#projects"
+              className={`nav-link ${activeSection === "projects" ? "is-active" : ""}`}
+              onClick={(e) => {
+                e.preventDefault();
+                handleLinkClick("#projects");
+              }}
+            >
+              <span className="nav-indicator" aria-hidden="true" />
+              <span>Work</span>
             </a>
-          </li>
-          <li>
-            <a data-href="#contact" href="#contact">
-              <HoverLinks text="CONTACT" />
+            <a
+              href="#skills"
+              className={`nav-link ${activeSection === "skills" ? "is-active" : ""}`}
+              onClick={(e) => {
+                e.preventDefault();
+                handleLinkClick("#skills");
+              }}
+            >
+              <span className="nav-indicator" aria-hidden="true" />
+              <span>Skills</span>
             </a>
-          </li>
-        </ul>
+            <a
+              href="#experience"
+              className={`nav-link ${activeSection === "experience" ? "is-active" : ""}`}
+              onClick={(e) => {
+                e.preventDefault();
+                handleLinkClick("#experience");
+              }}
+            >
+              <span className="nav-indicator" aria-hidden="true" />
+              <span>Experience</span>
+            </a>
+            <a
+              href="#contact"
+              className={`nav-link ${activeSection === "contact" ? "is-active" : ""}`}
+              onClick={(e) => {
+                e.preventDefault();
+                handleLinkClick("#contact");
+              }}
+            >
+              <span className="nav-indicator" aria-hidden="true" />
+              <span>Contact</span>
+            </a>
+          </nav>
+
+          <div className="navbar-actions">
+            <a
+              href="/resume/Hamza_Ramzan_CV.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-cv"
+              title="Open Resume PDF"
+            >
+              <span>Resume</span>
+              <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M2.5 9.5L9.5 2.5M9.5 2.5H4.5M9.5 2.5V7.5"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </a>
+
+            <button
+              type="button"
+              className={`mobile-toggle ${mobileMenuOpen ? "is-open" : ""}`}
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={mobileMenuOpen}
+            >
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+          </div>
+        </div>
       </div>
 
-      <div className="landing-circle1"></div>
-      <div className="landing-circle2"></div>
-      <div className="nav-fade"></div>
-    </>
+      {/* Mobile Drawer */}
+      <div className={`mobile-drawer ${mobileMenuOpen ? "is-open" : ""}`} aria-hidden={!mobileMenuOpen}>
+        <div className="mobile-nav-links">
+          <a
+            href="#journey"
+            className={`mobile-nav-link ${activeSection === "journey" ? "is-active" : ""}`}
+            onClick={(e) => {
+              e.preventDefault();
+              handleLinkClick("#journey");
+            }}
+          >
+            Journey
+          </a>
+          <a
+            href="#projects"
+            className={`mobile-nav-link ${activeSection === "projects" ? "is-active" : ""}`}
+            onClick={(e) => {
+              e.preventDefault();
+              handleLinkClick("#projects");
+            }}
+          >
+            Work
+          </a>
+          <a
+            href="#skills"
+            className={`mobile-nav-link ${activeSection === "skills" ? "is-active" : ""}`}
+            onClick={(e) => {
+              e.preventDefault();
+              handleLinkClick("#skills");
+            }}
+          >
+            Skills
+          </a>
+          <a
+            href="#experience"
+            className={`mobile-nav-link ${activeSection === "experience" ? "is-active" : ""}`}
+            onClick={(e) => {
+              e.preventDefault();
+              handleLinkClick("#experience");
+            }}
+          >
+            Experience
+          </a>
+          <a
+            href="#contact"
+            className={`mobile-nav-link ${activeSection === "contact" ? "is-active" : ""}`}
+            onClick={(e) => {
+              e.preventDefault();
+              handleLinkClick("#contact");
+            }}
+          >
+            Contact
+          </a>
+        </div>
+
+        <div className="mobile-drawer-footer">
+          <p>Hamza Ramzan • Machine Learning & Software Engineer</p>
+          <p>Bahawalpur, Pakistan • 2026</p>
+        </div>
+      </div>
+
+      {/* Thin scroll-progress indicator line under navbar */}
+      <div
+        className="navbar-progress-bar"
+        style={{ width: `${scrollProgress}%` }}
+        aria-hidden="true"
+      />
+    </header>
   );
 };
 

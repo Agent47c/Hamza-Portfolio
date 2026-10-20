@@ -1,0 +1,252 @@
+/* =========================================
+   JOURNEY & CAREER TIMELINE STYLES
+   Editorial Narrative Layout + Progressive Progress Line
+   ========================================= */
+
+.journey-section {
+  background-color: var(--color-base);
+  border-bottom: 1px solid var(--color-border-subtle);
+  position: relative;
+  overflow: hidden;
+}
+
+.journey-timeline {
+  position: relative;
+  margin-top: var(--s-3xl);
+  padding-left: 36px;
+}
+
+@media (min-width: 768px) {
+  .journey-timeline {
+    padding-left: 56px;
+  }
+}
+
+/* Vertical Scroll-Driven Track */
+.journey-track {
+  position: absolute;
+  top: 14px;
+  bottom: 24px;
+  left: 11px;
+  width: 2px;
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .journey-track {
+    left: 17px;
+  }
+}
+
+.journey-track-base {
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-border);
+  opacity: 0.8;
+}
+
+.journey-track-fill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, var(--color-orange) 0%, #ff7a3d 100%);
+  transform-origin: top center;
+  transform: scaleY(0);
+  will-change: transform;
+}
+
+/* Milestone Groups */
+.journey-milestones {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-2xl);
+}
+
+.journey-milestone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Milestone Marker Dot */
+.milestone-marker-wrap {
+  position: absolute;
+  left: -36px;
+  top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+@media (min-width: 768px) {
+  .milestone-marker-wrap {
+    left: -56px;
+  }
+}
+
+.milestone-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-border);
+  transition: all var(--duration-normal) var(--ease-out);
+  box-shadow: 0 0 0 4px var(--color-base);
+}
+
+.journey-milestone.is-active .milestone-dot {
+  background-color: var(--color-orange);
+  border-color: #ffffff;
+  box-shadow: 0 0 0 4px var(--color-base), 0 0 14px rgba(232, 90, 32, 0.55);
+  transform: scale(1.15);
+  animation: single-node-pulse 0.6s ease-out 1;
+}
+
+@keyframes single-node-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.35); box-shadow: 0 0 0 6px rgba(232, 90, 32, 0.4), 0 0 20px rgba(232, 90, 32, 0.8); }
+  100% { transform: scale(1.15); }
+}
+
+.milestone-step {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--color-text-muted);
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .milestone-step {
+    display: inline-block;
+  }
+}
+
+/* Milestone Card - Reduced visual weight, airy editorial feel */
+.milestone-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  padding: var(--s-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-md);
+  transition: border-color var(--duration-fast) var(--ease-out), transform var(--duration-fast) var(--ease-out);
+}
+
+.journey-milestone.is-active .milestone-card {
+  border-color: var(--color-border);
+}
+
+.milestone-card:hover {
+  border-color: var(--color-orange);
+  transform: translateX(4px);
+}
+
+@media (min-width: 900px) {
+  .milestone-card {
+    padding: var(--s-xl) var(--s-2xl);
+  }
+}
+
+.milestone-header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.milestone-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.milestone-phase {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-orange);
+}
+
+.milestone-year {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+}
+
+.milestone-title {
+  font-size: clamp(1.25rem, 2vw, 1.6rem);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.milestone-subtitle {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.milestone-desc {
+  font-size: var(--text-base);
+  line-height: 1.65;
+  color: var(--color-text-secondary);
+}
+
+/* Pull-Quote Takeaway: Increased padding & lighter-weight pull-quote type */
+.milestone-takeaway {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 20px;
+  background-color: var(--color-raised);
+  border-radius: var(--radius-sm);
+  border-left: 2px solid var(--color-orange);
+}
+
+.milestone-takeaway p {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--color-text-primary);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+.milestone-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-top: 4px;
+}
+
+.milestone-tag {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--color-text-secondary);
+  background-color: var(--color-base);
+  border: 1px solid var(--color-border-subtle);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.milestone-tag:hover {
+  border-color: var(--color-orange);
+  color: var(--color-text-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .milestone-dot {
+    animation: none !important;
+  }
+  .milestone-card:hover {
+    transform: none;
+  }
+}
