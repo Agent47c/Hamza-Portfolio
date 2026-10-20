@@ -3,8 +3,9 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { PROJECTS, ProjectData, findProjectBySlug } from "../data/projectsData";
-import { hasInAppHistory, scrollToTopImmediate, restoreScrollPosition, getSavedScrollPosition } from "../utils/scrollRestoration";
+import { hasInAppHistory, scrollToTopImmediate } from "../utils/scrollRestoration";
 import { useSmoothScroll, getLenis } from "../hooks/useSmoothScroll";
+import CountUpMetric from "../components/CountUpMetric";
 import "./styles/ProjectDetail.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -19,9 +20,31 @@ export const ProjectDetail = () => {
   const [stickyHeaderVisible, setStickyHeaderVisible] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+  const touchStartX = useRef<number | null>(null);
 
   // Find project by slug or alias
   const project: ProjectData | undefined = findProjectBySlug(slug);
+
+  const handleTouchStart = (e: ReactKeyboardEvent | any) => {
+    if (e.touches && e.touches[0]) {
+      touchStartX.current = e.touches[0].clientX;
+    }
+  };
+
+  const handleTouchEnd = (e: any) => {
+    if (touchStartX.current === null || !project) return;
+    const deltaX = (e.changedTouches ? e.changedTouches[0].clientX : 0) - touchStartX.current;
+    if (Math.abs(deltaX) > 40) {
+      if (deltaX > 0) {
+        // swipe right -> previous
+        setLightboxIndex((prev) => (prev - 1 + project.gallery.length) % project.gallery.length);
+      } else {
+        // swipe left -> next
+        setLightboxIndex((prev) => (prev + 1) % project.gallery.length);
+      }
+    }
+    touchStartX.current = null;
+  };
 
   const projectIndex = project ? PROJECTS.findIndex((p) => p.slug === project.slug) : -1;
   // Circular wrap-around for Previous and Next projects
@@ -63,17 +86,27 @@ export const ProjectDetail = () => {
         ease: "power2.out",
       });
 
-      // Animate Architecture Pipeline SVG Nodes on Scroll
+      // Animate Hairline Architecture Pipeline SVG Rail and Nodes on Scroll
+      gsap.to(".pipeline-rail-draw", {
+        strokeDashoffset: 0,
+        duration: 0.9,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: ".pipeline-svg-wrapper",
+          start: "top 85%",
+        },
+      });
+
       gsap.utils.toArray<HTMLElement>(".pipeline-node").forEach((node, idx) => {
         gsap.from(node, {
           opacity: 0,
-          scale: 0.95,
+          scale: 0.96,
           y: 12,
-          duration: 0.4,
+          duration: 0.45,
           delay: idx * 0.08,
           ease: "power2.out",
           scrollTrigger: {
-            trigger: ".pipeline-diagram-track",
+            trigger: ".pipeline-svg-wrapper",
             start: "top 85%",
             toggleActions: "play none none none",
           },
@@ -103,15 +136,10 @@ export const ProjectDetail = () => {
     if (hasInAppHistory()) {
       navigate(-1);
     } else {
-      navigate("/");
+      navigate("/#work");
       setTimeout(() => {
-        const savedHomeY = getSavedScrollPosition("/", "/");
-        if (savedHomeY !== undefined && savedHomeY > 0) {
-          restoreScrollPosition(savedHomeY);
-        } else {
-          scrollTo("#projects");
-        }
-      }, 80);
+        scrollTo("#work");
+      }, 120);
     }
   }, [navigate, scrollTo]);
 
@@ -397,23 +425,33 @@ export const ProjectDetail = () => {
             </p>
           </div>
 
-          <div className="pipeline-diagram-track">
-            {project.pipelineNodes.map((node, i) => (
-              <div key={node.id} className="pipeline-step-wrap">
-                <div className="pipeline-node">
-                  <div className="node-step-badge">{String(i + 1).padStart(2, "0")}</div>
-                  <h4 className="node-label">{node.label}</h4>
-                  {node.subtext && <p className="node-subtext">{node.subtext}</p>}
-                </div>
-                {i < project.pipelineNodes.length - 1 && (
-                  <div className="pipeline-arrow" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
+          <div className="pipeline-svg-wrapper">
+            <svg className="pipeline-connector-svg" viewBox="0 0 1000 4" preserveAspectRatio="none" aria-hidden="true">
+              <line x1="20" y1="2" x2="980" y2="2" className="pipeline-rail-base" />
+              <line x1="20" y1="2" x2="980" y2="2" className="pipeline-rail-draw" />
+            </svg>
+
+            <div className="pipeline-diagram-track">
+              {project.pipelineNodes.map((node, i) => {
+                const isCoreNode = i === 1 || node.id === "yolo" || node.id === "sam2" || node.id === "fastapi" || node.id === "cv" || node.id === "pipeline" || node.id === "worker";
+                return (
+                  <div key={node.id} className="pipeline-step-wrap">
+                    <div className={`pipeline-node ${isCoreNode ? "is-active-node" : ""}`}>
+                      <div className="node-step-badge">{String(i + 1).padStart(2, "0")}</div>
+                      <h4 className="node-label">{node.label}</h4>
+                      {node.subtext && <p className="node-subtext">{node.subtext}</p>}
+                    </div>
+                    {i < project.pipelineNodes.length - 1 && (
+                      <div className="pipeline-arrow" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-            ))}
+                );
+              })}
+            </div>
           </div>
 
           {/* Detailed Pipeline Breakdown */}
@@ -445,6 +483,39 @@ export const ProjectDetail = () => {
             ))}
           </div>
         </section>
+
+        {/* 6. Results & Outcomes (Real numbers only, TODO(me) placeholders for rest) */}
+        {project.results && project.results.length > 0 && (
+          <section className="case-study-results-section" aria-label="Verified Results and Benchmarks">
+            <div className="architecture-header">
+              <span className="section-mono-label">OUTCOMES & PROFILING</span>
+              <h2 className="section-subtitle">Results & Benchmarks</h2>
+              <p className="architecture-lead">
+                Measured system performance and operational parameters. Unprofiled variables are marked with TODO(me) until live hardware benchmarks are finalized.
+              </p>
+            </div>
+
+            <div className="results-grid">
+              {project.results.map((res, i) => (
+                <div key={i} className={`result-card ${res.isReal ? "is-verified" : "is-todo"}`}>
+                  <div className="result-card-header">
+                    <span className="result-label">{res.label}</span>
+                    <span className={`result-badge ${res.isReal ? "badge-verified" : "badge-todo"}`}>
+                      {res.isReal ? "CONFIRMED" : "TODO(me)"}
+                    </span>
+                  </div>
+                  <div className="result-value">
+                    {res.isReal && res.value === "98%+" ? (
+                      <CountUpMetric end={98} suffix="%+" />
+                    ) : (
+                      <span>{res.value}</span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
 
         {/* 6. Gallery Section with Lightbox */}
         <section className="case-study-gallery-section" aria-label="Visual Gallery">
@@ -509,7 +580,12 @@ export const ProjectDetail = () => {
           aria-label="Image Lightbox"
           onClick={closeLightbox}
         >
-          <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="lightbox-content"
+            onClick={(e) => e.stopPropagation()}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+          >
             <button
               type="button"
               className="lightbox-close"
