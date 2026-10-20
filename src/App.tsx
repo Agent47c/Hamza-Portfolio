@@ -6,12 +6,12 @@ import { initManualScrollRestoration, getSavedScrollPosition, restoreScrollPosit
 import { getMotionPreference } from "./utils/motion";
 import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
-import IntroOverlay from "./components/IntroOverlay";
-import ToastContainer from "./components/Toast";
 import NetBackground from "./components/NetBackground";
 import "./App.css";
 
-// Code-split project pages for performance & lightweight bundle
+// Code-split auxiliary components for minimum initial bundle size
+const IntroOverlay = lazy(() => import("./components/IntroOverlay"));
+const ToastContainer = lazy(() => import("./components/Toast"));
 const ProjectDetail = lazy(() => import("./pages/ProjectDetail"));
 
 // 404 Component
@@ -95,8 +95,10 @@ const AppContent = () => {
   return (
     <div className="app-wrapper">
       <NetBackground />
-      <IntroOverlay />
-      <ToastContainer />
+      <Suspense fallback={null}>
+        <IntroOverlay />
+        <ToastContainer />
+      </Suspense>
       <RouteTransitionBar active={isTransitioning} />
       <ScrollRestorationManager />
       <Navbar onNavigate={scrollTo} />
