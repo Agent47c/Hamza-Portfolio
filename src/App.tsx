@@ -1,59 +1,109 @@
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import { useSmoothScroll } from "./hooks/useSmoothScroll";
+import { initManualScrollRestoration, getSavedScrollPosition, restoreScrollPosition, saveScrollPosition } from "./utils/scrollRestoration";
 import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
-import ProjectDetail from "./pages/ProjectDetail";
 import "./App.css";
 
-// Scroll restoration component
-const ScrollToTop = () => {
-  const { pathname } = useLocation();
+// Code-split project pages for performance & lightweight bundle
+const ProjectDetail = lazy(() => import("./pages/ProjectDetail"));
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
-
-  return null;
+// 404 Component
+const NotFound = () => {
+  return (
+    <div className="not-found-screen">
+      <div className="container">
+        <span className="not-found-mono">ERROR 404</span>
+        <h1 className="not-found-title">Page Not Found</h1>
+        <p className="not-found-subtext">
+          The requested coordinate does not exist or has been relocated.
+        </p>
+        <a href="/" className="btn-primary" style={{ width: "fit-content", marginTop: "24px" }}>
+          <span>Return to Homepage</span>
+        </a>
+      </div>
+    </div>
+  );
 };
 
-// Fast route transition indicator (280ms)
-const RouteTransition = () => {
-  const { pathname } = useLocation();
-  const [transitioning, setTransitioning] = useState(false);
-
-  useEffect(() => {
-    setTransitioning(true);
-    const timer = setTimeout(() => {
-      setTransitioning(false);
-    }, 320);
-    return () => clearTimeout(timer);
-  }, [pathname]);
-
+// Route Transition Progress Bar
+const RouteTransitionBar = ({ active }: { active: boolean }) => {
   return (
     <div
-      className={`route-transition-bar ${transitioning ? "is-active" : ""}`}
+      className={`route-progress-line ${active ? "is-loading" : ""}`}
       aria-hidden="true"
     />
   );
 };
 
+// Precision Scroll Manager for Lenis & History Restoration
+const ScrollRestorationManager = () => {
+  const location = useLocation();
+  const { start, stop } = useSmoothScroll();
+
+  useEffect(() => {
+    initManualScrollRestoration();
+  }, []);
+
+  useEffect(() => {
+    // When returning to home page, restore saved scroll position
+    if (location.pathname === "/") {
+      const savedY = getSavedScrollPosition(location.key, "/");
+      if (savedY !== undefined && savedY > 0) {
+        restoreScrollPosition(savedY);
+      }
+    }
+
+    // Ensure Lenis wheel/touch scrolling never gets stuck after route changes
+    stop();
+    const timer = setTimeout(() => {
+      start();
+    }, 100);
+
+    return () => {
+      clearTimeout(timer);
+      // Save current scroll position before unmounting/navigating away
+      saveScrollPosition(location.key, location.pathname);
+    };
+  }, [location, start, stop]);
+
+  return null;
+};
+
 const AppContent = () => {
   const { scrollTo } = useSmoothScroll();
-  const { pathname } = useLocation();
+  const location = useLocation();
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  useEffect(() => {
+    setIsTransitioning(true);
+    const timer = setTimeout(() => setIsTransitioning(false), 350);
+    return () => clearTimeout(timer);
+  }, [location.pathname]);
 
   return (
     <div className="app-wrapper">
-      <ScrollToTop />
-      <RouteTransition />
+      <RouteTransitionBar active={isTransitioning} />
+      <ScrollRestorationManager />
       <Navbar onNavigate={scrollTo} />
-      <main key={pathname} className="page-content-wrapper">
-        <Routes>
-          <Route path="/" element={<HomePage onNavigate={scrollTo} />} />
-          <Route path="/projects/:slug" element={<ProjectDetail />} />
-          <Route path="*" element={<HomePage onNavigate={scrollTo} />} />
-        </Routes>
+      <main className="page-content-wrapper">
+        <Suspense
+          fallback={
+            <div className="route-suspense-fallback">
+              <div className="suspense-loader" />
+            </div>
+          }
+        >
+          <Routes>
+            <Route path="/" element={<HomePage onNavigate={scrollTo} />} />
+            {/* Project routes */}
+            <Route path="/projects/:slug" element={<ProjectDetail />} />
+            {/* 404 Route */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
       </main>
       <Analytics />
     </div>
