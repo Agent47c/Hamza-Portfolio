@@ -101,6 +101,24 @@
   animation: single-node-pulse 0.6s ease-out 1;
 }
 
+.milestone-dot-live {
+  position: relative;
+}
+
+.milestone-dot-live::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid var(--color-orange);
+  animation: pulse-ring 2.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.8); opacity: 0.8; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
 @keyframes single-node-pulse {
   0% { transform: scale(1); }
   50% { transform: scale(1.35); box-shadow: 0 0 0 6px rgba(232, 90, 32, 0.4), 0 0 20px rgba(232, 90, 32, 0.8); }

@@ -1,6 +1,7 @@
 import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import CountUpMetric from "./CountUpMetric";
 import "./styles/Journey.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -176,7 +177,7 @@ export const Journey = () => {
             {JOURNEY_STAGES.map((item) => (
               <div key={item.step} className="journey-milestone">
                 <div className="milestone-marker-wrap">
-                  <div className="milestone-dot" />
+                  <div className={`milestone-dot ${item.step === "06" ? "milestone-dot-live" : ""}`} />
                   <span className="milestone-step">{item.step}</span>
                 </div>
 
@@ -190,7 +191,17 @@ export const Journey = () => {
                     <p className="milestone-subtitle">{item.subtitle}</p>
                   </div>
 
-                  <p className="milestone-desc">{item.description}</p>
+                  <p className="milestone-desc">
+                    {item.description.includes("98%+") ? (
+                      <>
+                        {item.description.split("98%+")[0]}
+                        <CountUpMetric end={98} suffix="%+" />
+                        {item.description.split("98%+")[1]}
+                      </>
+                    ) : (
+                      item.description
+                    )}
+                  </p>
 
                   <div className="milestone-takeaway">
                     <div className="takeaway-bar" />

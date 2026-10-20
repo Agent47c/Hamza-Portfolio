@@ -1,5 +1,7 @@
 import { useRef, useEffect } from "react";
 import gsap from "gsap";
+import DetectionLayer from "./DetectionLayer";
+import { scrambleElement } from "../utils/scrambleText";
 import "./styles/Hero.css";
 
 interface HeroProps {
@@ -8,8 +10,13 @@ interface HeroProps {
 
 export const Hero = ({ onNavigate }: HeroProps) => {
   const heroRef = useRef<HTMLDivElement>(null);
+  const eyebrowRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
+    if (eyebrowRef.current) {
+      scrambleElement(eyebrowRef.current, "ENGINEERING & DEEP LEARNING", "hero-eyebrow");
+    }
+
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) return;
 
@@ -102,11 +109,12 @@ export const Hero = ({ onNavigate }: HeroProps) => {
         <div className="hero-inner">
           <div className="hero-title-group">
             <div className="hero-eyebrow-row">
-              <span className="hero-eyebrow">ENGINEERING & DEEP LEARNING</span>
+              <span className="hero-eyebrow" ref={eyebrowRef}>ENGINEERING & DEEP LEARNING</span>
               <div className="hero-accent-draw" aria-hidden="true" />
             </div>
 
             <div className="hero-name-mask">
+              <DetectionLayer />
               <h1 className="hero-name">
                 <span className="hero-name-word">HAMZA</span>{" "}
                 <span className="hero-name-word hero-name-accent">RAMZAN</span>

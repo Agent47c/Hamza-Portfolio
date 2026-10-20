@@ -1,6 +1,7 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { markElementRevealed, isElementRevealed, getMotionPreference } from "../utils/motion";
 import "./styles/TechnicalDepth.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -87,20 +88,29 @@ const SKILL_GROUPS: SkillGroup[] = [
 
 export const TechnicalDepth = () => {
   const sectionRef = useRef<HTMLElement>(null);
+  const [activeTab, setActiveTab] = useState<string>("all");
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReducedMotion) return;
+    if (!getMotionPreference()) return;
 
     const ctx = gsap.context(() => {
-      gsap.utils.toArray<HTMLElement>(".discipline-card").forEach((card) => {
+      gsap.utils.toArray<HTMLElement>(".discipline-card").forEach((card, idx) => {
+        const cardId = `skill-card-${card.getAttribute("data-id") || idx}`;
         const chips = card.querySelectorAll(".token-badge");
+
+        // If already revealed during this session, keep visible and don't re-animate
+        if (isElementRevealed(cardId)) {
+          gsap.set(card, { opacity: 1, y: 0 });
+          gsap.set(chips, { opacity: 1, y: 0 });
+          return;
+        }
 
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: card,
             start: "top 88%",
             toggleActions: "play none none none",
+            onEnter: () => markElementRevealed(cardId),
           },
         });
 
@@ -128,7 +138,12 @@ export const TechnicalDepth = () => {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [activeTab]);
+
+  const displayedGroups =
+    activeTab === "all"
+      ? SKILL_GROUPS
+      : SKILL_GROUPS.filter((group) => group.id === activeTab);
 
   return (
     <section className="section depth-section" id="skills" ref={sectionRef} aria-label="Skills & Tools">
@@ -140,6 +155,33 @@ export const TechnicalDepth = () => {
             Tools and technologies I use regularly across machine learning, software development,
             and systems administration.
           </p>
+
+          {/* Interactive Skills Category Tabs */}
+          <div className="skills-tabs" role="tablist" aria-label="Filter skills by discipline">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeTab === "all"}
+              className={`skills-tab-btn ${activeTab === "all" ? "is-active" : ""}`}
+              onClick={() => setActiveTab("all")}
+            >
+              <span className="tab-indicator" aria-hidden="true" />
+              <span>All Skills</span>
+            </button>
+            {SKILL_GROUPS.map((group) => (
+              <button
+                key={group.id}
+                type="button"
+                role="tab"
+                aria-selected={activeTab === group.id}
+                className={`skills-tab-btn ${activeTab === group.id ? "is-active" : ""}`}
+                onClick={() => setActiveTab(group.id)}
+              >
+                <span className="tab-indicator" aria-hidden="true" />
+                <span>{group.category}</span>
+              </button>
+            ))}
+          </div>
 
           <div className="skills-legend" role="region" aria-label="Skill proficiency legend">
             <div className="legend-item">
@@ -154,8 +196,8 @@ export const TechnicalDepth = () => {
         </div>
 
         <div className="disciplines-grid">
-          {SKILL_GROUPS.map((group) => (
-            <div key={group.id} className="discipline-card">
+          {displayedGroups.map((group) => (
+            <div key={group.id} data-id={group.id} className="discipline-card">
               <div className="discipline-header">
                 <h3 className="discipline-title">{group.category}</h3>
                 <p className="discipline-context">{group.description}</p>

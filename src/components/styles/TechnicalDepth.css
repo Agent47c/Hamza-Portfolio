@@ -48,12 +48,64 @@
   color: var(--color-text-secondary);
 }
 
+/* Skills Category Filter Tabs */
+.skills-tabs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: var(--s-lg);
+  margin-bottom: var(--s-xs);
+  padding-bottom: 8px;
+}
+
+.skills-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-subtle);
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.skills-tab-btn:hover {
+  border-color: var(--color-border);
+  color: var(--color-text-primary);
+  background-color: var(--color-raised);
+}
+
+.skills-tab-btn.is-active {
+  border-color: var(--color-orange);
+  color: var(--color-text-primary);
+  background-color: rgba(232, 90, 32, 0.08);
+}
+
+.skills-tab-btn .tab-indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--color-text-muted);
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.skills-tab-btn.is-active .tab-indicator {
+  background-color: var(--color-orange);
+  box-shadow: 0 0 6px rgba(232, 90, 32, 0.6);
+}
+
 /* Disciplines Grid */
 .disciplines-grid {
   display: flex;
   flex-direction: column;
   gap: var(--s-xl);
-  margin-top: var(--s-2xl);
+  margin-top: var(--s-xl);
 }
 
 /* Card Chrome - Minimal hairline borders, generous padding */
@@ -66,11 +118,17 @@
   border: 1px solid var(--color-border-subtle);
   border-radius: var(--radius-sm);
   position: relative;
-  transition: border-color var(--duration-fast) var(--ease-out);
+  transition: border-color var(--duration-fast) var(--ease-out),
+              opacity var(--duration-fast) var(--ease-out);
 }
 
 .discipline-card:hover {
   border-color: var(--color-border);
+}
+
+/* Hovering a group dims other groups slightly without flickering on gaps */
+.disciplines-grid:has(.discipline-card:hover) .discipline-card:not(:hover) {
+  opacity: 0.45;
 }
 
 @media (min-width: 900px) {

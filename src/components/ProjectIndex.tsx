@@ -108,6 +108,7 @@ export const ProjectIndex = () => {
 
   return (
     <section className="section project-index-section" id="projects" ref={sectionRef} aria-label="Selected Projects">
+      <span id="work" className="section-anchor-shim" aria-hidden="true" style={{ position: "absolute", top: "-80px" }} />
       <div className="container">
         <div className="section-header">
           <span className="section-label">Selected Work</span>

@@ -1,6 +1,7 @@
 import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import CountUpMetric from "./CountUpMetric";
 import "./styles/Experience.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -150,7 +151,17 @@ export const Experience = () => {
               <div className="timeline-description">
                 <ul className="timeline-points">
                   {item.points.map((pt, i) => (
-                    <li key={i}>{pt}</li>
+                    <li key={i}>
+                      {pt.includes("98%+") ? (
+                        <>
+                          {pt.split("98%+")[0]}
+                          <CountUpMetric end={98} suffix="%+" />
+                          {pt.split("98%+")[1]}
+                        </>
+                      ) : (
+                        pt
+                      )}
+                    </li>
                   ))}
                 </ul>
               </div>
