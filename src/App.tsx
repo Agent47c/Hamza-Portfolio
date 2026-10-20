@@ -8,6 +8,7 @@ import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
 import IntroOverlay from "./components/IntroOverlay";
 import ToastContainer from "./components/Toast";
+import NetBackground from "./components/NetBackground";
 import "./App.css";
 
 // Code-split project pages for performance & lightweight bundle
@@ -93,6 +94,7 @@ const AppContent = () => {
 
   return (
     <div className="app-wrapper">
+      <NetBackground />
       <IntroOverlay />
       <ToastContainer />
       <RouteTransitionBar active={isTransitioning} />

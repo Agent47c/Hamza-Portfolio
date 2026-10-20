@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./styles/Philosophy.css";
@@ -7,42 +7,54 @@ gsap.registerPlugin(ScrollTrigger);
 
 export const Philosophy = () => {
   const sectionRef = useRef<HTMLElement>(null);
+  const [activeRow, setActiveRow] = useState<number | null>(null);
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReducedMotion) return;
 
     const ctx = gsap.context(() => {
-      gsap.utils.toArray<HTMLElement>(".philosophy-row").forEach((row) => {
-        const line = row.querySelector(".philosophy-heading-line");
+      const rows = sectionRef.current?.querySelectorAll(".philosophy-row");
+      const lines = sectionRef.current?.querySelectorAll(".philosophy-heading-line");
 
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: row,
-            start: "top 88%",
-            toggleActions: "play none none none",
-          },
-        });
-
-        tl.from(row, {
-          opacity: 0,
-          y: 18,
-          duration: 0.45,
-          ease: "power2.out",
-        });
-
-        if (line) {
-          tl.from(
-            line,
-            {
-              scaleX: 0,
-              duration: 0.55,
-              ease: "power2.out",
+      if (rows && rows.length > 0) {
+        gsap.fromTo(
+          rows,
+          { opacity: 0, y: 16 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.45,
+            stagger: 0.08,
+            ease: "power2.out",
+            clearProps: "all",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 90%",
+              toggleActions: "play none none none",
             },
-            "-=0.25"
-          );
-        }
-      });
+          }
+        );
+      }
+
+      if (lines && lines.length > 0) {
+        gsap.fromTo(
+          lines,
+          { scaleX: 0 },
+          {
+            scaleX: 1,
+            duration: 0.5,
+            stagger: 0.08,
+            ease: "power2.out",
+            clearProps: "all",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 90%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
     }, sectionRef);
 
     return () => ctx.revert();
@@ -61,7 +73,18 @@ export const Philosophy = () => {
         </div>
 
         <div className="philosophy-grid">
-          <div className="philosophy-row">
+          <div
+            className={`philosophy-row ${activeRow === 0 ? "is-selected" : ""}`}
+            onClick={() => setActiveRow(activeRow === 0 ? null : 0)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                setActiveRow(activeRow === 0 ? null : 0);
+              }
+            }}
+          >
             <div className="philosophy-num">01 / DATA</div>
             <div className="philosophy-heading-wrap">
               <h3 className="philosophy-heading">Good Data Comes First</h3>
@@ -79,7 +102,18 @@ export const Philosophy = () => {
             </div>
           </div>
 
-          <div className="philosophy-row">
+          <div
+            className={`philosophy-row ${activeRow === 1 ? "is-selected" : ""}`}
+            onClick={() => setActiveRow(activeRow === 1 ? null : 1)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                setActiveRow(activeRow === 1 ? null : 1);
+              }
+            }}
+          >
             <div className="philosophy-num">02 / REALITY</div>
             <div className="philosophy-heading-wrap">
               <h3 className="philosophy-heading">Built to Run on Real Hardware</h3>
@@ -97,7 +131,18 @@ export const Philosophy = () => {
             </div>
           </div>
 
-          <div className="philosophy-row">
+          <div
+            className={`philosophy-row ${activeRow === 2 ? "is-selected" : ""}`}
+            onClick={() => setActiveRow(activeRow === 2 ? null : 2)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                setActiveRow(activeRow === 2 ? null : 2);
+              }
+            }}
+          >
             <div className="philosophy-num">03 / SYSTEMS</div>
             <div className="philosophy-heading-wrap">
               <h3 className="philosophy-heading">Software Around the Model</h3>

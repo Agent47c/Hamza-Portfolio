@@ -28,24 +28,14 @@ export const MOTION = {
   },
 };
 
-// Motion Toggle (Override prefers-reduced-motion)
-const MOTION_STORAGE_KEY = "hamza_motion_preference";
-
+// Motion is always enabled across the portfolio
 export const getMotionPreference = (): boolean => {
-  if (typeof window === "undefined") return true;
-  const saved = localStorage.getItem(MOTION_STORAGE_KEY);
-  if (saved !== null) {
-    return saved === "true";
-  }
-  // Default to system preference
-  return !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  return true;
 };
 
-export const setMotionPreference = (enabled: boolean): void => {
+export const setMotionPreference = (_enabled: boolean): void => {
   if (typeof window === "undefined") return;
-  localStorage.setItem(MOTION_STORAGE_KEY, enabled ? "true" : "false");
-  document.documentElement.setAttribute("data-motion", enabled ? "on" : "off");
-  window.dispatchEvent(new CustomEvent("motion-preference-changed", { detail: { enabled } }));
+  document.documentElement.setAttribute("data-motion", "on");
 };
 
 // Session revealed elements tracker: prevents reveals from replaying or hiding content on back-navigation

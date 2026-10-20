@@ -4,7 +4,7 @@
    ========================================= */
 
 .depth-section {
-  background-color: var(--color-base);
+  background-color: transparent;
   border-bottom: 1px solid var(--color-border-subtle);
   position: relative;
 }
@@ -108,27 +108,25 @@
   margin-top: var(--s-xl);
 }
 
-/* Card Chrome - Minimal hairline borders, generous padding */
+/* Card Chrome - Minimal hairline borders, generous padding, frosted glass */
 .discipline-card {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--s-lg);
   padding: var(--s-xl);
-  background-color: var(--color-surface);
+  background-color: rgba(18, 20, 24, 0.65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border: 1px solid var(--color-border-subtle);
   border-radius: var(--radius-sm);
   position: relative;
-  transition: border-color var(--duration-fast) var(--ease-out),
-              opacity var(--duration-fast) var(--ease-out);
+  opacity: 1;
+  transition: all var(--duration-fast) var(--ease-out);
 }
 
 .discipline-card:hover {
   border-color: var(--color-border);
-}
-
-/* Hovering a group dims other groups slightly without flickering on gaps */
-.disciplines-grid:has(.discipline-card:hover) .discipline-card:not(:hover) {
-  opacity: 0.45;
+  background-color: rgba(28, 32, 40, 0.85);
 }
 
 @media (min-width: 900px) {
@@ -172,7 +170,7 @@
   gap: 8px;
 }
 
-/* Token Badges - Consistent sizing, hover lift */
+/* Token Badges - Interactive buttons, consistent sizing, hover lift */
 .token-badge {
   font-family: var(--font-mono);
   font-size: 0.75rem;
@@ -183,7 +181,10 @@
   display: inline-flex;
   align-items: center;
   transition: all var(--duration-fast) var(--ease-out);
-  cursor: default;
+  cursor: pointer;
+  user-select: none;
+  opacity: 1;
+  outline: none;
 }
 
 .token-core {
@@ -210,6 +211,16 @@
   border-color: var(--color-border-hover);
   background-color: var(--color-raised);
   transform: translateY(-2px);
+}
+
+/* Active Selected Token State: vibrant highlight, glowing border, maximum opacity */
+.token-badge.is-selected {
+  background-color: var(--color-orange) !important;
+  color: #0b0c0d !important;
+  border-color: var(--color-orange) !important;
+  font-weight: 700 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 0 16px rgba(232, 90, 32, 0.65);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -7,22 +7,33 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies & Build Output
 node_modules
 dist
 dist-ssr
-*.local
+*.tsbuildinfo
 
-# Editor directories and files
+# Vercel Deployment & Caches
+.vercel
+
+# Environment variables (keep secrets safe)
+.env
+.env.*
+!.env.example
+
+# Local configurations & backups
+*.local
+backup/
+.npmrc
+
+# Editor & OS files
 .vscode/*
 !.vscode/extensions.json
 .idea
 .DS_Store
+Thumbs.db
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
-.npmrc
-
-backup/
-.env

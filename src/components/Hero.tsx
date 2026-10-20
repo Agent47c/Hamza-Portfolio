@@ -1,6 +1,5 @@
 import { useRef, useEffect } from "react";
 import gsap from "gsap";
-import DetectionLayer from "./DetectionLayer";
 import { scrambleElement } from "../utils/scrambleText";
 import "./styles/Hero.css";
 
@@ -114,7 +113,6 @@ export const Hero = ({ onNavigate }: HeroProps) => {
             </div>
 
             <div className="hero-name-mask">
-              <DetectionLayer />
               <h1 className="hero-name">
                 <span className="hero-name-word">HAMZA</span>{" "}
                 <span className="hero-name-word hero-name-accent">RAMZAN</span>

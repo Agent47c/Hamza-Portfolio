@@ -4,7 +4,7 @@
    ========================================= */
 
 .philosophy-section {
-  background-color: var(--color-base);
+  background-color: transparent;
   border-bottom: 1px solid var(--color-border-subtle);
   position: relative;
 }
@@ -12,7 +12,7 @@
 .philosophy-grid {
   display: flex;
   flex-direction: column;
-  gap: var(--s-3xl);
+  gap: var(--s-md);
   margin-top: var(--s-2xl);
 }
 
@@ -20,8 +20,38 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--s-md);
-  padding-bottom: var(--s-2xl);
-  border-bottom: 1px solid var(--color-border-subtle);
+  padding: var(--s-xl) var(--s-md);
+  border: 1px solid var(--color-border-subtle);
+  background-color: rgba(18, 20, 24, 0.65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  position: relative;
+  border-radius: var(--radius-sm);
+  opacity: 1;
+  visibility: visible;
+  transition: border-color var(--duration-fast) var(--ease-out),
+              background-color var(--duration-fast) var(--ease-out),
+              box-shadow var(--duration-fast) var(--ease-out),
+              transform var(--duration-fast) var(--ease-out);
+  cursor: pointer;
+}
+
+.philosophy-row:hover,
+.philosophy-row.is-selected {
+  background-color: rgba(28, 32, 40, 0.9);
+  border-color: var(--color-orange);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+}
+
+.philosophy-row:hover .philosophy-heading,
+.philosophy-row.is-selected .philosophy-heading {
+  color: #ffffff;
+}
+
+.philosophy-row:hover .philosophy-heading-line,
+.philosophy-row.is-selected .philosophy-heading-line {
+  width: 68px;
 }
 
 @media (min-width: 900px) {
@@ -29,6 +59,7 @@
     grid-template-columns: 140px 1fr 1.35fr;
     gap: var(--s-2xl);
     align-items: flex-start;
+    padding: var(--s-xl) var(--s-xl);
   }
 }
 
@@ -87,15 +118,18 @@
 
 /* Deliberate closing statement with larger type */
 .philosophy-closing-statement {
-  margin-top: var(--s-3xl);
+  margin-top: var(--s-2xl);
   padding: var(--s-xl) var(--s-2xl);
-  background-color: var(--color-surface);
+  background-color: rgba(18, 20, 24, 0.65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border: 1px solid var(--color-border-subtle);
   border-left: 3px solid var(--color-orange);
   border-radius: var(--radius-sm);
   display: flex;
   flex-direction: column;
   gap: 10px;
+  transition: all var(--duration-fast) var(--ease-out);
 }
 
 .closing-statement-label {

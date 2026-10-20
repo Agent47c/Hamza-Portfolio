@@ -1,7 +1,6 @@
 import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { markElementRevealed, isElementRevealed, getMotionPreference } from "../utils/motion";
 import "./styles/TechnicalDepth.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -95,55 +94,45 @@ const SKILL_GROUPS: SkillGroup[] = [
 export const TechnicalDepth = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [activeTab, setActiveTab] = useState<string>("all");
+  const [selectedSkill, setSelectedSkill] = useState<string | null>(null);
 
+  // Section entrance reveal
   useEffect(() => {
-    if (!getMotionPreference()) return;
-
     const ctx = gsap.context(() => {
-      gsap.utils.toArray<HTMLElement>(".discipline-card").forEach((card, idx) => {
-        const cardId = `skill-card-${card.getAttribute("data-id") || idx}`;
-        const chips = card.querySelectorAll(".token-badge");
-
-        // If already revealed during this session, keep visible and don't re-animate
-        if (isElementRevealed(cardId)) {
-          gsap.set(card, { opacity: 1, y: 0 });
-          gsap.set(chips, { opacity: 1, y: 0 });
-          return;
-        }
-
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: card,
-            start: "top 88%",
-            toggleActions: "play none none none",
-            onEnter: () => markElementRevealed(cardId),
-          },
-        });
-
-        tl.from(card, {
-          opacity: 0,
-          y: 16,
-          duration: 0.45,
-          ease: "power2.out",
-        });
-
-        if (chips.length > 0) {
-          tl.from(
-            chips,
-            {
-              opacity: 0,
-              y: 8,
-              stagger: 0.02,
-              duration: 0.25,
-              ease: "power2.out",
-            },
-            "-=0.2"
-          );
-        }
+      gsap.from(".depth-section .section-header", {
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 85%",
+          toggleActions: "play none none none",
+        },
+        opacity: 0,
+        y: 16,
+        duration: 0.5,
+        ease: "power2.out",
+        clearProps: "all",
       });
     }, sectionRef);
 
     return () => ctx.revert();
+  }, []);
+
+  // Smooth, guaranteed card reveal whenever activeTab changes (including initial load)
+  useEffect(() => {
+    const cards = sectionRef.current?.querySelectorAll(".discipline-card");
+    if (!cards || cards.length === 0) return;
+
+    gsap.fromTo(
+      cards,
+      { opacity: 0, y: 12 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.35,
+        stagger: 0.05,
+        ease: "power2.out",
+        clearProps: "all",
+      }
+    );
   }, [activeTab]);
 
   const displayedGroups =
@@ -211,14 +200,20 @@ export const TechnicalDepth = () => {
 
               <div className="discipline-details">
                 <div className="discipline-tokens">
-                  {group.skills.map((skill) => (
-                    <span
-                      key={skill.name}
-                      className={`token-badge ${skill.isCore ? "token-core" : "token-familiar"}`}
-                    >
-                      {skill.name}
-                    </span>
-                  ))}
+                  {group.skills.map((skill) => {
+                    const isSelected = selectedSkill === skill.name;
+                    return (
+                      <button
+                        key={skill.name}
+                        type="button"
+                        className={`token-badge ${skill.isCore ? "token-core" : "token-familiar"} ${isSelected ? "is-selected" : ""}`}
+                        onClick={() => setSelectedSkill(isSelected ? null : skill.name)}
+                        aria-pressed={isSelected}
+                      >
+                        {skill.name}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             </div>

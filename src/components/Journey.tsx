@@ -21,7 +21,7 @@ const JOURNEY_STAGES: JourneyStage[] = [
   {
     step: "01",
     phase: "WHERE I STARTED",
-    year: "2016 — Present",
+    year: "2016 — 2022",
     title: "Software & Web Development",
     subtitle: "Freelance Web Developer • Shopify & Full-Stack Projects",
     description:

@@ -3,7 +3,6 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useSmoothScroll } from "../hooks/useSmoothScroll";
 import { triggerToast } from "./Toast";
-import { getMotionPreference, setMotionPreference } from "../utils/motion";
 import "./styles/Contact.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -17,7 +16,6 @@ interface FormErrors {
 export const Contact = () => {
   const { scrollTo } = useSmoothScroll();
   const [copied, setCopied] = useState(false);
-  const [motionOn, setMotionOn] = useState(true);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -29,17 +27,6 @@ export const Contact = () => {
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [serverErrorMessage, setServerErrorMessage] = useState("");
   const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    setMotionOn(getMotionPreference());
-  }, []);
-
-  const toggleMotion = () => {
-    const next = !motionOn;
-    setMotionOn(next);
-    setMotionPreference(next);
-    triggerToast(`Motion effects: ${next ? "ON" : "OFF"}`, "info");
-  };
 
   const destinationEmail = import.meta.env.VITE_CONTACT_EMAIL || "hamza.jani7433@gmail.com";
   const phone = "+92 3465288405";
@@ -252,7 +239,7 @@ export const Contact = () => {
                     </a>
 
                     <a
-                      href="https://www.linkedin.com/in/hamza-ramzan"
+                      href="https://www.linkedin.com/in/hamza-ramzan-5516a7272/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="social-btn"
@@ -415,20 +402,6 @@ export const Contact = () => {
           </p>
 
           <div className="footer-controls">
-            <button
-              type="button"
-              className="footer-motion-toggle"
-              onClick={toggleMotion}
-              aria-label={`Toggle motion animations: currently ${motionOn ? "on" : "off"}`}
-              title="Toggle site-wide animations & smooth scroll"
-            >
-              <span className={`motion-indicator-dot ${motionOn ? "is-active" : ""}`} aria-hidden="true" />
-              <span className="motion-label">MOTION:</span>
-              <span className={`motion-state ${motionOn ? "is-active" : ""}`}>
-                {motionOn ? "ON" : "OFF"}
-              </span>
-            </button>
-
             <button
               type="button"
               className="footer-back-to-top"

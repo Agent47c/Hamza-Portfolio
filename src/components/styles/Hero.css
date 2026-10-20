@@ -33,6 +33,11 @@
   right: var(--gutter);
 }
 
+.hero-section .container {
+  position: relative;
+  z-index: 2;
+}
+
 .hero-inner {
   display: flex;
   flex-direction: column;

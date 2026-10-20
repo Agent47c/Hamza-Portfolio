@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import CountUpMetric from "./CountUpMetric";
@@ -114,6 +114,7 @@ const EXPERIENCES: ExperienceItem[] = [
 
 export const Experience = () => {
   const sectionRef = useRef<HTMLElement>(null);
+  const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -126,6 +127,7 @@ export const Experience = () => {
           y: 16,
           duration: 0.5,
           ease: "power2.out",
+          clearProps: "all",
           scrollTrigger: {
             trigger: item,
             start: "top 92%",
@@ -152,7 +154,19 @@ export const Experience = () => {
 
         <div className="timeline-list">
           {EXPERIENCES.map((item, idx) => (
-            <div key={idx} className="timeline-item">
+            <div
+              key={idx}
+              className={`timeline-item ${selectedIdx === idx ? "is-selected" : ""}`}
+              onClick={() => setSelectedIdx(selectedIdx === idx ? null : idx)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  setSelectedIdx(selectedIdx === idx ? null : idx);
+                }
+              }}
+            >
               <div className="timeline-period">
                 <span className="timeline-year">{item.period}</span>
                 {item.status && (
@@ -191,7 +205,18 @@ export const Experience = () => {
           ))}
 
           {/* Education row matching 3-column timeline layout */}
-          <div className="timeline-item timeline-item-education">
+          <div
+            className={`timeline-item timeline-item-education ${selectedIdx === 999 ? "is-selected" : ""}`}
+            onClick={() => setSelectedIdx(selectedIdx === 999 ? null : 999)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                setSelectedIdx(selectedIdx === 999 ? null : 999);
+              }
+            }}
+          >
             <div className="timeline-period">
               <span className="timeline-year">2022 — 2026</span>
               <span className="timeline-edu-badge">EDUCATION</span>

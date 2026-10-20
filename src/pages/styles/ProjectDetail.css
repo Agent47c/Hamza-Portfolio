@@ -5,7 +5,7 @@
 
 .case-study-page {
   min-height: 100vh;
-  background-color: var(--color-base);
+  background-color: transparent;
   padding-top: calc(72px + var(--s-2xl));
   padding-bottom: var(--s-5xl);
   position: relative;
