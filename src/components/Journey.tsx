@@ -21,24 +21,24 @@ const JOURNEY_STAGES: JourneyStage[] = [
   {
     step: "01",
     phase: "WHERE I STARTED",
-    year: "2016 — 2022",
-    title: "Software & Web Foundations",
+    year: "2016 — Present",
+    title: "Software & Web Development",
     subtitle: "Freelance Web Developer • Shopify & Full-Stack Projects",
     description:
-      "Started by building custom web applications and e-commerce stores using JavaScript, HTML, CSS, and Liquid. Dealt directly with clients, responsive layouts, and performance constraints.",
+      "Started by building custom web applications and e-commerce stores using JavaScript, HTML, CSS, and Liquid. Dealt directly with clients, responsive layouts, SEO optimization, and performance constraints.",
     takeaway: "Lesson: Software isn't theoretical. It has to load fast, handle edge cases, and solve a concrete problem for real people.",
-    tags: ["JavaScript", "Responsive UI", "REST APIs", "Liquid", "Shopify"],
+    tags: ["JavaScript", "Responsive UI", "Shopify", "WordPress", "Liquid", "SEO"],
   },
   {
     step: "02",
-    phase: "UNDER THE HOOD",
-    year: "2022 — 2024",
-    title: "Systems Administration & Infrastructure",
-    subtitle: "System Administrator @ Motion Spectrum",
+    phase: "HARDWARE FOUNDATION",
+    year: "2016 — Present",
+    title: "High-Performance Systems & PC Building",
+    subtitle: "Custom Hardware Engineering & Diagnostics",
     description:
-      "Administered Windows Server environments, Active Directory domains, GPOs, and corporate networking. Assembled and benchmarked high-performance workstations for specialized workloads.",
-    takeaway: "Lesson: Gained deep respect for the hardware and operating system layers that machine learning models run on.",
-    tags: ["Windows Server", "Active Directory", "Hardware Tuning", "Networking", "PowerShell"],
+      "Assembled, tuned, and overclocked specialized gaming and productivity desktops. Built and delivered 10 high-performance custom PCs for Motion Spectrum and multiple corporate and gaming clients in a single month.",
+    takeaway: "Lesson: Gained deep respect for the physical silicon, thermal limits, and hardware architecture that modern AI and deep learning workloads depend upon.",
+    tags: ["Hardware Architecture", "BIOS/UEFI", "Thermal Optimization", "Workstation Assembly", "Overclocking"],
   },
   {
     step: "03",
@@ -47,7 +47,7 @@ const JOURNEY_STAGES: JourneyStage[] = [
     title: "Dataset Quality & Annotation Leadership",
     subtitle: "QA Team Manager @ Data Nomad",
     description:
-      "Promoted to QA Team Manager within 2 months. Led a cross-functional team auditing thousands of computer vision annotation frames across polygon masks, bounding boxes, video feeds, and OCR to maintain 98%+ precision.",
+      "Promoted to QA Team Manager within 2 months of joining. Led cross-functional QA teams auditing thousands of multi-modal dataset frames across video, polygon masks, bounding boxes, and OCR to maintain 98%+ precision.",
     takeaway: "Core Truth: Clean labels matter more than tuning hyperparameters. If training ground-truth is flawed, production models will fail every time.",
     tags: ["Label Studio", "CVAT", "Dataset Auditing", "QA Protocols", "Computer Vision"],
   },
@@ -58,7 +58,7 @@ const JOURNEY_STAGES: JourneyStage[] = [
     title: "Supervised Learning & Statistical Pipelines",
     subtitle: "Machine Learning Intern @ Certura",
     description:
-      "Built and evaluated predictive models using Random Forest, Decision Trees, and Regression algorithms. Engineered features, handled categorical distributions, and validated with ROC-AUC, precision-recall, and cross-validation.",
+      "Built and optimized supervised machine learning models including Linear Regression, Naive Bayes, and Random Forest. Cleaned structured datasets through feature selection, outlier detection, scaling, and categorical encoding.",
     takeaway: "Lesson: How to diagnose overfitting, evaluate data leakage, and establish solid baselines before reaching for heavy architectures.",
     tags: ["scikit-learn", "Python", "Pandas", "Feature Engineering", "NumPy"],
   },
@@ -69,12 +69,23 @@ const JOURNEY_STAGES: JourneyStage[] = [
     title: "Computer Vision Tracking & Medical Foundation Models",
     subtitle: "ML Engineer Intern @ Arch Technologies",
     description:
-      "Engineered real-time tracking pipelines by combining YOLOv11 with StrongSORT. Fine-tuned foundation models including SAM2 and MedSAM-2 for high-precision MRI segmentation with CUDA acceleration.",
-    takeaway: "Lesson: Modern vision requires orchestrating multiple specialized models together to achieve low latency on live streams.",
-    tags: ["YOLOv11", "SAM2 / MedSAM-2", "StrongSORT", "PyTorch", "CUDA"],
+      "Engineered real-time tracking pipelines combining YOLOv11 with StrongSORT. Applied foundation models including SAM2 and MedSAM-2 for medical imaging segmentation, alongside NLP and regression models.",
+    takeaway: "Lesson: Modern vision requires orchestrating specialized models into low-latency pipelines for reliable real-time inference.",
+    tags: ["YOLOv11", "SAM2 / MedSAM-2", "StrongSORT", "PyTorch", "OpenCV"],
   },
   {
     step: "06",
+    phase: "ENTERPRISE & SYSTEMS",
+    year: "Jan 2025 — Present",
+    title: "Systems Administration & Infrastructure",
+    subtitle: "System Administrator @ Motion Spectrum",
+    description:
+      "Administering Windows Server and Windows 10/11 environments, managing Active Directory domains, GPOs, and corporate networking. Deploying and optimizing high-performance workstations with reliable backup routines.",
+    takeaway: "Lesson: Running stable production environments requires disciplined access control, automated backups, and minimal downtime.",
+    tags: ["Windows Server", "Active Directory", "Networking", "GPO", "Workstation Deployment"],
+  },
+  {
+    step: "07",
     phase: "WHERE I AM NOW",
     year: "2025 — Present",
     title: "Practical Software + ML Engineering",
@@ -82,7 +93,7 @@ const JOURNEY_STAGES: JourneyStage[] = [
     description:
       "Unifying deep learning models with clean application software: the PPE Safety Monitor (YOLO + PyQt5 + email alerting), IronLog (100% offline React Native + SQLite gym tracker), and Farm Camera Video Analytics (local RTSP edge automation).",
     takeaway: "Mission: Build reliable, self-contained systems where machine learning and intuitive software work seamlessly together.",
-    tags: ["PyTorch", "React Native", "SQLite", "OpenCV", "Edge AI"],
+    tags: ["PyTorch", "Python", "SQL", "OpenCV", "Edge AI"],
   },
 ];
 
@@ -177,8 +188,9 @@ export const Journey = () => {
             {JOURNEY_STAGES.map((item) => (
               <div key={item.step} className="journey-milestone">
                 <div className="milestone-marker-wrap">
-                  <div className={`milestone-dot ${item.step === "06" ? "milestone-dot-live" : ""}`} />
-                  <span className="milestone-step">{item.step}</span>
+                  <div className={`milestone-dot ${item.step === "07" ? "milestone-dot-live" : ""}`}>
+                    <span className="milestone-step">{item.step}</span>
+                  </div>
                 </div>
 
                 <div className="milestone-card">

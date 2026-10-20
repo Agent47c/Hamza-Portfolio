@@ -38,10 +38,10 @@
 
 @media (min-width: 900px) {
   .timeline-item {
-    /* 230px consistent column width prevents "Jun 2025 — Sep 2025" from wrapping */
-    grid-template-columns: 230px 1.15fr 1.55fr;
+    /* Generous 2.1fr width for descriptions so points span wide horizontally */
+    grid-template-columns: 210px 1.05fr 2.1fr;
     gap: var(--s-2xl);
-    align-items: baseline;
+    align-items: flex-start;
     padding: var(--s-xl) var(--s-md);
   }
 }
@@ -123,7 +123,7 @@
 .timeline-points {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -131,15 +131,19 @@
 
 .timeline-points li {
   position: relative;
-  padding-left: 14px;
+  padding-left: 18px;
+  line-height: 1.6;
 }
 
 .timeline-points li::before {
-  content: '—';
+  content: '';
   position: absolute;
   left: 0;
-  top: 0;
-  color: var(--color-orange);
+  top: 9px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: var(--color-orange);
 }
 
 .education-note {

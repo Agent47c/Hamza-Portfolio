@@ -30,27 +30,6 @@
               box-shadow var(--duration-fast) var(--ease-out);
 }
 
-/* Pointer Spotlight on Card Border */
-.project-tile::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: radial-gradient(380px circle at var(--mouse-x, -999px) var(--mouse-y, -999px), rgba(232, 90, 32, 0.4), transparent 70%);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity var(--duration-fast) var(--ease-out);
-  z-index: 5;
-}
-
-.project-tile:hover::before {
-  opacity: 1;
-}
-
 /* Subtle tonal variations between dark foundation & charcoal surface */
 .project-surface-dark {
   background-color: var(--color-surface);
@@ -62,8 +41,12 @@
 
 .project-tile:hover {
   border-color: var(--color-orange);
-  transform: translateY(-2px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55);
+}
+
+.project-tile:active {
+  transform: translateY(-1px) scale(0.995);
 }
 
 .project-tile:hover .tile-title {
@@ -71,7 +54,11 @@
 }
 
 .project-tile:hover .tile-arrow {
-  transform: translateX(5px);
+  transform: translateX(6px);
+}
+
+.project-tile:hover .tile-image-inner img {
+  transform: scale(1.04);
 }
 
 /* -----------------------------------------
@@ -166,6 +153,7 @@
   width: 100%;
   overflow: hidden;
   background-color: var(--color-base);
+  background: radial-gradient(circle at center, rgba(32, 36, 44, 0.6) 0%, rgba(11, 12, 13, 0.98) 100%);
 }
 
 .tile-image-horizontal {
@@ -198,126 +186,25 @@
   height: 100%;
   overflow: hidden;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .tile-image-inner img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: left center;
+  object-position: center center;
   transition: transform var(--duration-normal) var(--ease-out);
   will-change: transform;
 }
 
 .tile-image-stacked .tile-image-inner img {
-  object-position: center top;
+  object-position: center center;
 }
 
-/* -----------------------------------------
-   AI-Themed Hover Overlays
-   ----------------------------------------- */
-.ai-overlay {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity var(--duration-fast) var(--ease-out);
-  z-index: 4;
-}
-
-.project-tile:hover .ai-overlay {
-  opacity: 1;
-}
-
-.ai-overlay-svg {
-  width: 100%;
-  height: 100%;
-}
-
-.ai-box {
-  fill: rgba(232, 90, 32, 0.08);
-  stroke: var(--color-orange);
-  stroke-width: 1.5;
-  stroke-dasharray: 4 2;
-}
-
-.ai-box-helmet {
-  stroke: #22c55e;
-  fill: rgba(34, 197, 94, 0.12);
-}
-
-.ai-box-vest {
-  stroke: #eab308;
-  fill: rgba(234, 179, 8, 0.1);
-}
-
-.ai-tag {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  fill: #ffffff;
-}
-
-.ai-tag-accent {
-  fill: var(--color-orange);
-}
-
-.ai-contour {
-  fill: rgba(232, 90, 32, 0.16);
-  stroke: var(--color-orange);
-  stroke-width: 2;
-  stroke-dasharray: 400;
-  stroke-dashoffset: 400;
-  transition: stroke-dashoffset 0.65s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.project-tile:hover .ai-contour {
-  stroke-dashoffset: 0;
-}
-
-.ai-centroid {
-  fill: #22c55e;
-  box-shadow: 0 0 6px #22c55e;
-}
-
-/* IronLog mini chart bars */
-.ai-grid-line {
-  stroke: rgba(255, 255, 255, 0.2);
-  stroke-width: 1;
-  stroke-dasharray: 3 3;
-}
-
-.ai-bar {
-  fill: var(--color-orange);
-  transform-origin: 0 150px;
-  transform: scaleY(0);
-  transition: transform 0.4s var(--ease-out);
-}
-
-.project-tile:hover .ai-bar-1 { transform: scaleY(1); transition-delay: 0.04s; }
-.project-tile:hover .ai-bar-2 { transform: scaleY(1); transition-delay: 0.08s; }
-.project-tile:hover .ai-bar-3 { transform: scaleY(1); transition-delay: 0.12s; }
-.project-tile:hover .ai-bar-4 { transform: scaleY(1); transition-delay: 0.16s; }
-.project-tile:hover .ai-bar-5 { transform: scaleY(1); transition-delay: 0.20s; }
-
-/* Farm Camera timeline */
-.ai-timeline-line {
-  stroke: rgba(255, 255, 255, 0.3);
-  stroke-width: 1.5;
-}
-
-.ai-tick {
-  fill: var(--color-surface);
-  stroke: var(--color-border);
-  stroke-width: 1.5;
-  transition: all 0.3s ease-out;
-}
-
-.project-tile:hover .ai-tick-1 { fill: var(--color-orange); stroke: #ffffff; transition-delay: 0.04s; }
-.project-tile:hover .ai-tick-2 { fill: var(--color-orange); stroke: #ffffff; transition-delay: 0.10s; }
-.project-tile:hover .ai-tick-3 { fill: var(--color-orange); stroke: #ffffff; transition-delay: 0.16s; }
-.project-tile:hover .ai-tick-4 { fill: #22c55e; stroke: #ffffff; transition-delay: 0.22s; }
+/* Clean Image Transitions */
 
 /* -----------------------------------------
    Typography & Metadata
