@@ -3,8 +3,11 @@ import { useEffect, useState, lazy, Suspense } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import { useSmoothScroll } from "./hooks/useSmoothScroll";
 import { initManualScrollRestoration, getSavedScrollPosition, restoreScrollPosition, saveScrollPosition } from "./utils/scrollRestoration";
+import { getMotionPreference } from "./utils/motion";
 import Navbar from "./components/Navbar";
 import HomePage from "./pages/HomePage";
+import IntroOverlay from "./components/IntroOverlay";
+import ToastContainer from "./components/Toast";
 import "./App.css";
 
 // Code-split project pages for performance & lightweight bundle
@@ -78,6 +81,11 @@ const AppContent = () => {
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   useEffect(() => {
+    // Initialize motion attribute on root HTML element
+    document.documentElement.setAttribute("data-motion", getMotionPreference() ? "on" : "off");
+  }, []);
+
+  useEffect(() => {
     setIsTransitioning(true);
     const timer = setTimeout(() => setIsTransitioning(false), 350);
     return () => clearTimeout(timer);
@@ -85,6 +93,8 @@ const AppContent = () => {
 
   return (
     <div className="app-wrapper">
+      <IntroOverlay />
+      <ToastContainer />
       <RouteTransitionBar active={isTransitioning} />
       <ScrollRestorationManager />
       <Navbar onNavigate={scrollTo} />

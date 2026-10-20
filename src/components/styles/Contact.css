@@ -403,6 +403,61 @@
   color: var(--color-text-muted);
 }
 
+.footer-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.footer-motion-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  padding: 6px 14px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.footer-motion-toggle:hover {
+  border-color: var(--color-orange);
+  color: var(--color-text-primary);
+}
+
+.motion-indicator-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--color-text-muted);
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.motion-indicator-dot.is-active {
+  background-color: var(--color-orange);
+  box-shadow: 0 0 6px rgba(232, 90, 32, 0.6);
+}
+
+.motion-label {
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.motion-state {
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+
+.motion-state.is-active {
+  color: var(--color-orange);
+}
+
 .footer-back-to-top {
   display: inline-flex;
   align-items: center;
